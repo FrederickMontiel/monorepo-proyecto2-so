@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Puntos de Interés Geoespaciales</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Header fijo -->
+    <header class="app-header">
+        <h1>📍 Sistema de Puntos de Interés Geoespaciales</h1>
+    </header>
+
+    <!-- Contenedor principal con sidebar y mapa -->
+    <div class="app-container">
+        <!-- Sidebar izquierdo -->
+        <aside class="sidebar">
+            <!-- Búsqueda y filtros -->
+            <div class="search-section">
+                <h2>🔍 Búsqueda y Filtros</h2>
+
+                <div class="form-group">
+                    <label>Buscar por nombre:</label>
+                    <input type="text" id="searchBox" placeholder="Escriba para buscar..." class="search-input">
+                </div>
+
+                <div class="form-group">
+                    <label>Categoría:</label>
+                    <select id="filterCategory" class="filter-select">
+                        <option value="">Todas</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Subcategoría:</label>
+                    <select id="filterSubcategory" class="filter-select">
+                        <option value="">Todas</option>
+                    </select>
+                </div>
+
+                <button id="btnAddPoint" class="btn btn-primary btn-full">
+                    ➕ Agregar Nuevo Punto
+                </button>
+            </div>
+
+            <!-- Lista de resultados -->
+            <div class="results-section">
+                <h3>Resultados (<span id="resultsCount">0</span>)</h3>
+                <div id="pointsList" class="points-list">
+                    <p class="loading">Cargando puntos...</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Área del mapa -->
+        <main class="map-section">
+            <div id="map"></div>
+        </main>
+    </div>
+
+    <!-- Modal para agregar/editar punto -->
+    <div id="modalAddPoint" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>➕ Agregar Nuevo Punto</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="addPointForm" class="modal-body">
+                <div class="form-group">
+                    <label for="pointName">Nombre *</label>
+                    <input type="text" id="pointName" required maxlength="150" placeholder="Ej: Parque Central">
+                </div>
+
+                <div class="form-group">
+                    <label for="pointDescription">Descripción</label>
+                    <textarea id="pointDescription" rows="3" placeholder="Descripción del punto de interés"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pointCategory">Categoría *</label>
+                        <select id="pointCategory" required>
+                            <option value="">Seleccione...</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pointSubcategory">Subcategoría *</label>
+                        <select id="pointSubcategory" required>
+                            <option value="">Primero seleccione categoría</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>📍 Ubicación</label>
+                    <button type="button" id="btnGeolocate" class="btn btn-success btn-full">
+                        📡 Usar Mi Ubicación Actual
+                    </button>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pointLatitude">Latitud *</label>
+                        <input type="number" id="pointLatitude" step="0.000001" min="-90" max="90" required
+                            placeholder="14.6349">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pointLongitude">Longitud *</label>
+                        <input type="number" id="pointLongitude" step="0.000001" min="-180" max="180" required
+                            placeholder="-90.5069">
+                    </div>
+                </div>
+
+                <!-- Mapa de previsualización -->
+                <div class="form-group">
+                    <label>🗺️ Previsualización (haz clic para cambiar ubicación)</label>
+                    <div id="modalMap" style="height: 300px; border-radius: 8px; overflow: hidden;"></div>
+                </div>
+
+                <p class="help-text">💡 Haz clic en el mapa para seleccionar la ubicación exacta</p>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">✅ Guardar Punto</button>
+                    <button type="button" class="btn btn-secondary" id="btnCancelModal">❌ Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
