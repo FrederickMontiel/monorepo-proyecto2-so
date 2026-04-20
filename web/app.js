@@ -1,6 +1,6 @@
 // Configuración de la API
 const hostname = window.location.hostname;
-const API_BASE_URL = 'http://'+hostname+'/api/api';
+const API_BASE_URL = window.location.origin + '/api/api';
 
 // Estado global
 let map = null;
