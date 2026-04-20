@@ -103,7 +103,21 @@ async function apiRequest(endpoint, options = {}) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        return await response.json();
+        // Si la respuesta está vacía (ej: DELETE), no intentar parsear JSON
+        const contentType = response.headers.get('content-type');
+        const contentLength = response.headers.get('content-length');
+
+        if (contentLength === '0' || response.status === 204) {
+            return null;
+        }
+
+        if (contentType && contentType.includes('application/json')) {
+            return await response.json();
+        }
+
+        // Intentar parsear como JSON por defecto, pero manejar respuestas vacías
+        const text = await response.text();
+        return text ? JSON.parse(text) : null;
     } catch (error) {
         console.error('API Request Error:', error);
         throw error;
